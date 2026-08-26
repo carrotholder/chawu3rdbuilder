@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/jpeg" href="images/chawulogo.jpeg">
+<title>CHAWU's 3rd Builder — A proposal from Nikki Yao</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Serif+SC:wght@400;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F6F1E4;
+    --cream-2:#EFE8D6;
+    --ink:#1E1A14;
+    --forest:#1F3B32;
+    --forest-light:#3C5C4E;
+    --gold:#B8823E;
+    --peach:#E3AE83;
+    --line:#D9CFB8;
+    --white:#FFFCF5;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Instrument Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--forest); color:var(--cream);}
+
+  h1,h2,h3, .serif{font-family:'Fraunces', serif;}
+  .zh{font-family:'Noto Serif SC', serif;}
+  .mono{font-family:'Space Mono', monospace; letter-spacing:0.02em;}
+
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+
+  .wrap{max-width:1180px; margin:0 auto; padding-left:6vw; padding-right:6vw;}
+  @media(min-width:1300px){.wrap{padding-left:80px; padding-right:80px;}}
+
+  .eyebrow{
+    font-family:'Space Mono', monospace;
+    font-size:12px; letter-spacing:0.15em; text-transform:uppercase;
+    color:var(--forest); opacity:0.75;
+  }
+  hr.rule{border:none; border-top:1px solid var(--line); margin:0;}
+
+  /* reveal-on-scroll */
+  .reveal{opacity:0; transform:translateY(24px); transition:opacity 0.9s cubic-bezier(.16,.84,.44,1), transform 0.9s cubic-bezier(.16,.84,.44,1);}
+  .reveal.in{opacity:1; transform:translateY(0);}
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1; transform:none; transition:none;}
+    html{scroll-behavior:auto;}
+  }
+
+  /* ---------- NAV ---------- */
+  #nav{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px 6vw;
+    mix-blend-mode:normal;
+    transition:background 0.4s ease, padding 0.4s ease, border-color .4s ease;
+    border-bottom:1px solid transparent;
+  }
+  #nav.scrolled{
+    background:rgba(246,241,228,0.86);
+    backdrop-filter:blur(10px);
+    padding:14px 6vw;
+    border-bottom:1px solid var(--line);
+  }
+  .nav-mark{font-family:'Fraunces', serif; font-weight:500; font-size:19px; letter-spacing:0.04em;}
+  .nav-links{display:flex; gap:30px; font-size:13px; letter-spacing:0.02em;}
+  .nav-links a{position:relative; padding-bottom:3px;}
+  .nav-links a::after{content:'';position:absolute; left:0; right:100%; bottom:0; height:1px; background:var(--forest); transition:right .35s ease;}
+  .nav-links a:hover::after{right:0;}
+  .nav-burger{display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none;}
+  .nav-burger span{width:22px; height:1.5px; background:var(--ink); display:block;}
+  #mobile-menu{
+    position:fixed; inset:0; background:var(--forest); color:var(--cream); z-index:99;
+    display:flex; flex-direction:column; align-items:flex-start; justify-content:center; gap:26px;
+    padding:6vw 10vw; transform:translateY(-100%); transition:transform .5s cubic-bezier(.76,0,.24,1);
+  }
+  #mobile-menu.open{transform:translateY(0);}
+  #mobile-menu a{font-family:'Fraunces',serif; font-size:32px; font-weight:400;}
+  #mobile-menu .close-btn{position:absolute; top:26px; right:6vw; font-size:14px; letter-spacing:.1em; background:none; border:none; color:var(--cream); cursor:pointer;}
+
+  @media(max-width:860px){
+    .nav-links{display:none;}
+    .nav-burger{display:flex;}
+  }
+
+  /* progress bar */
+  #progress{position:fixed; top:0; left:0; height:2px; background:var(--gold); z-index:101; width:0%;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    min-height:100vh; display:flex; flex-direction:column; justify-content:flex-end;
+    position:relative; padding-bottom:70px; padding-top:140px;
+    background:
+      radial-gradient(ellipse 900px 500px at 85% 10%, rgba(184,130,62,0.18), transparent 60%),
+      linear-gradient(180deg, var(--cream) 0%, var(--cream) 100%);
+  }
+  .hero-top{padding:0 6vw; display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:auto;}
+  .hero-kicker{font-size:13px; max-width:220px; opacity:0.75; line-height:1.5;}
+  .hero-body{padding:0 6vw;}
+  .hero h1{
+    font-size:clamp(52px, 10vw, 148px); font-weight:400; line-height:0.94; letter-spacing:-0.01em;
+    color:var(--forest);
+  }
+  .hero h1 em{font-style:italic; font-weight:400; color:var(--gold);}
+  .hero-sub{
+    max-width:560px; font-size:clamp(17px,2vw,21px); line-height:1.5; margin-top:28px; color:var(--ink);
+  }
+  .hero-meta{
+    display:flex; justify-content:space-between; align-items:flex-end; margin-top:64px; flex-wrap:wrap; gap:24px;
+  }
+  .hero-name{font-family:'Fraunces',serif; font-size:16px;}
+  .hero-name span{display:block; font-family:'Instrument Sans',sans-serif; font-size:12px; opacity:.6; margin-top:2px;}
+  .hero-tags{font-family:'Space Mono',monospace; font-size:12px; letter-spacing:.05em; text-align:right; opacity:.8;}
+  .scroll-cta{
+    display:flex; align-items:center; gap:10px; font-size:13px; letter-spacing:.03em;
+    margin-top:56px; color:var(--forest);
+  }
+  .scroll-cta .arrow{animation:bob 1.8s ease-in-out infinite;}
+  @keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(6px);}}
+
+  /* ---------- SECTION GENERIC ---------- */
+  section{position:relative; padding:150px 0;}
+  .section-head{display:flex; gap:40px; justify-content:space-between; margin-bottom:80px; flex-wrap:wrap;}
+  .section-num{font-family:'Space Mono',monospace; font-size:13px; color:var(--gold); min-width:60px;}
+  h2.big{
+    font-family:'Fraunces',serif; font-weight:400; font-size:clamp(34px,5.2vw,64px);
+    line-height:1.06; letter-spacing:-0.01em; color:var(--forest); max-width:820px;
+  }
+  .section-intro{max-width:420px; font-size:16px; line-height:1.6; opacity:0.8; align-self:flex-end;}
+  .band-dark{background:var(--forest); color:var(--cream);}
+  .band-dark h2.big{color:var(--cream);}
+  .band-dark .eyebrow{color:var(--peach); opacity:1;}
+  .band-dark .section-intro{color:var(--cream); opacity:.78;}
+
+  /* cards */
+  .grid{display:grid; gap:1px; background:var(--line);}
+  .card{background:var(--cream); padding:36px 32px; transition:background .35s ease;}
+  .band-dark .card{background:var(--forest); }
+  .card:hover{background:var(--cream-2);}
+  .band-dark .card:hover{background:#28473c;}
+  .card h3{font-family:'Fraunces',serif; font-size:22px; font-weight:500; margin-bottom:10px; color:var(--forest);}
+  .band-dark .card h3{color:var(--peach);}
+  .card p{font-size:14.5px; line-height:1.55; opacity:.82;}
+
+  .g5{grid-template-columns:repeat(5,1fr);}
+  .g4{grid-template-columns:repeat(4,1fr);}
+  .g3{grid-template-columns:repeat(3,1fr);}
+  .g2{grid-template-columns:repeat(2,1fr);}
+  @media(max-width:900px){.g5,.g4,.g3{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:560px){.g5,.g4,.g3,.g2{grid-template-columns:1fr;}}
+
+  .pullquote{
+    font-family:'Fraunces',serif; font-style:italic; font-weight:400;
+    font-size:clamp(22px,3vw,34px); line-height:1.4; max-width:780px; color:var(--forest);
+    padding:56px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin-top:70px;
+  }
+  .band-dark .pullquote{color:var(--cream); border-color:rgba(246,241,228,0.25);}
+
+  /* WHY ME */
+  .stat-row{display:flex; align-items:baseline; gap:26px; margin-bottom:60px;}
+  .stat-num{font-family:'Fraunces',serif; font-size:clamp(90px,16vw,220px); font-weight:400; line-height:0.8; color:var(--gold);}
+  .stat-label{font-size:15px; max-width:200px; line-height:1.4;}
+  .did-list{list-style:none; display:grid; grid-template-columns:1fr 1fr; gap:16px 40px; max-width:760px;}
+  .did-list li{font-size:16.5px; padding-left:22px; position:relative; line-height:1.5;}
+  .did-list li::before{content:'—'; position:absolute; left:0; color:var(--gold);}
+  @media(max-width:640px){.did-list{grid-template-columns:1fr;}}
+ 
+  .why-me-layout{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:60px;
+    align-items:start;
+    margin-top:40px;
+  }
+  .why-me-text p{
+    font-size:16px;
+    line-height:1.6;
+    opacity:.8;
+    max-width:420px;
+  }
+  .why-me-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+  }
+  .why-me-grid img{
+    width:100%;
+    aspect-ratio:3/4;
+    object-fit:cover;
+    border-radius:2px;
+    filter:saturate(0.94) contrast(1.02);
+  }
+  @media(max-width:800px){
+    .why-me-layout{
+      grid-template-columns:1fr;
+      gap:32px;
+    }
+  }
+
+  /* TRANSFERABLE SKILLS - mapping */
+  .map-row{
+    display:grid; grid-template-columns:1fr 40px 1.4fr; align-items:center; gap:22px;
+    padding:26px 0; border-bottom:1px solid var(--line);
+  }
+  .map-row:first-child{border-top:1px solid var(--line);}
+  .map-from{font-family:'Space Mono',monospace; font-size:13px; letter-spacing:.06em; color:#F6F1E4;}
+  .map-arrow{font-size:18px; color:var(--gold); text-align:center;}
+  .map-to1{font-family:'Space Mono',monospace; font-size:16px; color:#F6F1E4;}
+  .map-to2{font-family:'Fraunces',serif; font-size:16px; color:#F6F1E4;}
+  @media(max-width:700px){.map-row{grid-template-columns:1fr; gap:6px; padding:20px 0;} .map-arrow{display:none;}}
+
+  /* BIG OPPORTUNITY split */
+  .split{display:grid; grid-template-columns:1fr 1fr; gap:2px; background:var(--line); margin-top:20px;}
+  .split-col{background:var(--cream); padding:56px 44px;}
+  .split-col.today{opacity:0.72;}
+  .split-col.next{background:var(--forest); color:var(--cream);}
+  .split-tag{font-family:'Space Mono',monospace; font-size:12px; letter-spacing:.15em; text-transform:uppercase; opacity:.6; margin-bottom:20px;}
+  .split-col.next .split-tag{color:var(--peach); opacity:1;}
+  .split-col h4{font-family:'Fraunces',serif; font-size:30px; margin-bottom:18px;}
+  .chip-list{display:flex; flex-wrap:wrap; gap:10px;}
+  .chip{border:1px solid rgba(30,26,20,0.25); border-radius:100px; padding:7px 16px; font-size:13.5px;}
+  .split-col.next .chip{border-color:rgba(246,241,228,0.35);}
+  @media(max-width:760px){.split{grid-template-columns:1fr;}}
+  .opp-statement{
+    text-align:center; font-family:'Fraunces',serif; font-size:clamp(26px,4vw,42px); font-style:italic;
+    color:var(--forest); max-width:760px; margin:64px auto 0; line-height:1.3;
+  }
+
+  /* IDEA sections (chawu@work / partnerships / quiz / popup) */
+  .idea-tag{
+    display:inline-block; font-family:'Space Mono',monospace; font-size:12px; letter-spacing:.12em;
+    text-transform:uppercase; border:1px solid var(--forest); color:var(--forest); border-radius:100px;
+    padding:6px 16px; margin-bottom:26px;
+  }
+  .band-dark .idea-tag{border-color:var(--peach); color:var(--peach);}
+
+  .offer-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); margin-top:56px;}
+  @media(max-width:900px){.offer-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:560px){.offer-grid{grid-template-columns:1fr;}}
+
+  .pgrid{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); margin-top:56px;}
+  @media(max-width:820px){.pgrid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:560px){.pgrid{grid-template-columns:1fr;}}
+  .pcard{background:var(--forest); color:var(--cream); padding:30px 26px; cursor:default;}
+  .pcard .ptag{font-family:'Space Mono',monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--peach); margin-bottom:10px;}
+  .pcard h4{font-family:'Fraunces',serif; font-size:19px; font-weight:500; margin-bottom:8px;}
+  .pcard p{font-size:13.5px; opacity:.78; line-height:1.5;}
+
+  .partner-list{
+    margin-top:18px;
+    padding-top:14px;
+    border-top:1px solid rgba(246,241,228,0.2);
+  }
+  .partner-label{
+    font-family:'Space Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--peach);
+    opacity:.85;
+    margin-bottom:6px;
+  }
+  .partner-names{
+    font-size:13px;
+    line-height:1.5;
+    opacity:.85;
+  }
+
+  .combo-examples{display:flex; flex-direction:column; gap:1px; background:var(--line); margin-top:56px;}
+  .combo{background:var(--cream); padding:26px 32px; display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;}
+  .combo-x{font-family:'Fraunces',serif; font-style:italic; font-size:19px;}
+  .combo-x b{font-style:normal; color:var(--forest);}
+  .combo-desc{font-size:14px; opacity:.7;}
+
+  /* POPUP flow */
+  .flow{display:flex; align-items:center; flex-wrap:wrap; gap:10px; font-family:'Space Mono',monospace; font-size:13px; margin-top:10px;}
+  .flow span.step{background:var(--cream-2); border:1px solid var(--line); border-radius:100px; padding:8px 16px;}
+  .flow span.arrow{opacity:.4;}
+  .flow.old span.step{opacity:.55;}
+  .flow.new span.step{background:var(--forest); color:var(--cream); border-color:var(--forest);}
+
+  /* pillars */
+  .pillar-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:8px; background:rgba(246,241,228,.2); margin-top:56px;}
+  @media(max-width:900px){.pillar-grid{grid-template-columns:repeat(2,2fr);}}
+  @media(max-width:560px){.pillar-grid{grid-template-columns:2fr;}}
+  .pillar{background:white; padding:38px 28px;}
+  .pillar h4{font-family:'Fraunces',serif; font-size:21px; color:var(--peach); margin-bottom:10px;}
+  .pillar p{font-size:14px; opacity:.8; line-height:1.5;}
+
+  /* why im doing this */
+  .personal{max-width:640px; font-family:'Fraunces',serif; font-size:clamp(19px,2.2vw,25px); line-height:1.6; font-weight:400;}
+  .personal p{margin-bottom:26px;}
+  .personal em{color:var(--gold); font-style:italic;}
+
+  /* final */
+  .final{min-height:100vh; display:flex; flex-direction:column; justify-content:center; text-align:center; padding:120px 0;}
+  .final h2{
+    font-family:'Fraunces',serif; font-weight:400; font-size:clamp(42px,9vw,120px); line-height:0.98; color:var(--forest);
+  }
+  .final .sub{margin-top:26px; font-size:15px; letter-spacing:.05em; opacity:.7;}
+  .final .signoff{margin-top:70px;}
+  .final .signoff .n{font-family:'Fraunces',serif; font-size:22px;}
+  .final .signoff .r{font-size:13px; opacity:.6; margin-top:4px;}
+  .final .cta{
+    display:inline-block; margin-top:46px; border:1px solid var(--forest); border-radius:100px;
+    padding:16px 38px; font-size:14px; letter-spacing:.03em; transition:all .3s ease;
+  }
+  .final .cta:hover{background:var(--forest); color:var(--cream);}
+
+  footer{padding:34px 6vw; display:flex; justify-content:space-between; font-size:11px; opacity:.5; font-family:'Space Mono',monospace;}
+
+  .divider-zh{font-family:'Noto Serif SC',serif; font-size:13px; opacity:.45; letter-spacing:.1em;}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<nav id="nav">
+  <a href="#top" class="nav-mark">CHAWU'S 3RD BUILDER</a>
+  <div class="nav-links">
+    <a href="#why-chawu">Why CHAWU</a>
+    <a href="#why-me">Why Me</a>
+    <a href="#my-value">My Value</a>
+    <a href="#own">My Role</a>
+    <a href="#ideas">Ideas</a>
+    <a href="#love-letter">Love Letter</a>
+    <a href="#build">Let's Build</a>
+  </div>
+  <button class="nav-burger" id="burgerBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
+</nav>
+
+<div id="mobile-menu">
+  <button class="close-btn" id="closeMenu">CLOSE ✕</button>
+  <a href="#why-chawu">Why CHAWU</a>
+  <a href="#why-me">Why Me</a>
+  <a href="#my-value">My Value</a>
+  <a href="#own">My Role</a>
+  <a href="#ideas">Ideas</a>
+  <a href="#love-letter">Love Letter</a>
+  <a href="#build">Let's Build</a>
+</div>
+
+<!-- ============ HERO ============ -->
+<header class="hero" id="top">
+  <div class="hero-top">
+    <div class="hero-kicker">Let's turn CHAWU from a promising tea brand into a leading Australian tea business.</div>
+    <div class="hero-kicker" style="text-align:right;">茶馆 · 生长</div>
+  </div>
+  <div class="hero-body">
+    <h1>CHAWU,<br>next <em>chapter.</em></h1>
+    <div class="hero-meta">
+      <div>
+        <div class="hero-sub">Why I should be your 3rd founder</div>
+        <a href="#why-chawu" class="scroll-cta">Let me convince you <span class="arrow">↓</span></a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ 01 WHY CHAWU ============ -->
+<section id="why-chawu" class="band-dark">
+  <div class="wrap">
+    <div class="section-head reveal">
+        <div>
+          <div class="eyebrow">01 — Why CHAWU</div>
+          <h2 class="big">Lucy, Manda, you have been so brilliant and phenomenal</h2>
+        </div>
+        <div class="section-intro">Before I speak on how I can provide value, there's so many achievements to be proud of in the last 10 months</div>
+      </div>
+      <div class="grid g5 reveal">
+        <div class="card"><h3>Product</h3><p>You've carefully sourced high quality tea leaves of distinctive flavours.</p></div>
+        <div class="card"><h3>Brand</h3><p>You've curated a visual and cultural identity that is loved and validated by the audience.</p></div>
+        <div class="card"><h3>Community</h3><p>You've built a social following over 9k in 10 months that talks about CHAWU unprompted.</p></div>
+        <div class="card"><h3>Experience</h3><p>You've hosted pop-ups that put the product directly in people's hands — and change their minds.</p></div>
+        <div class="card"><h3>Foundation</h3><p>You've developed a working ecommerce engine, with channels and partnerships in motion.</p></div>
+      </div>
+    <div class="pullquote reveal">However, I believe I have value in driving our beloved brand and its products to the next level.</div>
+  </div>
+</section>
+
+<!-- ============ 02 WHY ME ============ -->
+<section id="why-me" class="wrap">
+  <div class="section-head reveal">
+    <div>
+      <div class="eyebrow">02 — Why Me</div>
+      <h2 class="big">You already love me in your team, but unofficially.</h2>
+    </div>
+  <div class="why-me-layout">
+  <div class="why-me-text">
+    <p>I've been involved beyond just being a customer — helping CHAWU get in front of new people and seeing how they respond firsthand. 
+    <br><br>I've sold directly, pitched CHAWU to new audiences, and helped shape ideas around strategy, direction and new channels. 
+    <br><br>Most importantly, I've been thinking about where the next wave of growth can come from — and how we can test it.</p>
+  </div>
+  <div class="why-me-grid">
+    <img src="images/popup-1.JPEG" alt="CHAWU pop-up photo 1">
+    <img src="images/popup-2.JPEG" alt="CHAWU pop-up photo 2">
+    <img src="images/popup-3.jpeg" alt="CHAWU pop-up photo 3">
+    <img src="images/popup-4.JPEG" alt="CHAWU pop-up photo 4">
+  </div>
+</div>
+</section>
+
+<!-- ============ 03 TRANSFERABLE SKILLS ============ -->
+<section id="my-value" class="band-dark">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow">03 — What I Bring</div>
+        <h2 class="big">While I don't come from tea,<br>I do come from Product, Strategy & Growth.</h2>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="map-row"><div class="map-from">PRODUCT & STRATEGY</div><div class="map-arrow">→</div>
+        <div class="map-to2">
+          <b>Turning a big idea into a clear roadmap, priorities and next moves.</b><br><br>
+          <p>I’m establishing the customer journey for originating a specialised lending product across a complex, fragmented environment spanning multiple systems. My role is to take an ambiguous problem, map the experience end-to-end, and turn it into a clear roadmap, priorities and next moves.</p>
+        </div>
+      </div>
+      <div class="map-row"><div class="map-from">COMMERCIAL THINKING</div><div class="map-arrow">→</div>
+        <div class="map-to2">
+          <b>Making decisions with both customers and the numbers in mind.</b><br><br>
+          <p>I’ve structured the prioritisation of a technology issue affecting both customers and internal teams, balancing impact, effort and commercial risk. I’ve also negotiated a partnership change that resulted in $150K in savings.</p>
+        </div>
+      </div>
+      <div class="map-row"><div class="map-from">CUSTOMER & GTM</div><div class="map-arrow">→</div>
+        <div class="map-to2">
+          <b>Finding the right audience — and giving them a reason to choose you.</b><br><br>
+          <p>I launched the entry of an existing product into a smaller customer segment within four months, taking it from strategy to market through capability sessions, customer activations and customised sales collateral.
+        </div>
+      </div>
+      <div class="map-row"><div class="map-from">TECH & DATA</div><div class="map-arrow">→</div>
+        <div class="map-to2">
+          <b>Using technology to make good ideas scalable.</b><br><br>
+          <p>I’m introducing alternative data sources for my product, working directly with data teams to define the scope, requirements and future-state process. Today, obtaining these data points is highly manual; automating not only removes time for analysis but increases accuracy of performance.</p>
+        </div>
+      </div>
+      <div class="map-row"><div class="map-from">EXECUTION</div><div class="map-arrow">→</div>
+        <div class="map-to2">
+          <b>Getting complex things done when the stakes are high.</b><br><br>
+          <p>I successfully delivered the manual migration of existing customers from an old product system to a new one — establishing the customer and internal journeys, coordinating multiple stakeholders and managing a 30-person team against a tight timeline.</p>
+        </div>
+      </div>
+    </div>
+    <div class="pullquote reveal">While I haven't built a business before, I know how to take a product into a market, understand customers, and turn strategy into execution.</div>
+  </div>
+</section>
+
+<!-- ============ 04 WHAT I WANT TO OWN ============ -->
+<section id="own" class="wrap">
+    <div class="eyebrow reveal">04 — What I Can Own</div>
+    <h2 class="big reveal" style="font-size:clamp(40px,7vw,88px);">Growth & Strategy</h2>
+    <div class="pillar-grid reveal">
+      <div class="pillar"><h4>GTM</h4><p>How CHAWU enters new markets and customer segments through viral campaigns and unique activations.</p></div>
+      <div class="pillar"><h4>Partnerships</h4><p>Strategically prioritise who CHAWU should work with and build the blueprint for ongoing relationships.</p></div>
+      <div class="pillar"><h4>Wholesale</h4><p>Building a repeatable B2B channel with optimal pricing model.</p></div>
+      <div class="pillar"><h4>Growth</h4><p>Testing, measuring and scaling customer acquisition based off what the numbers tell us.</p></div>
+    </div>
+    <div class="pullquote reveal">You can continue to own what you do best: product, brand and the soul of CHAWU. I take ownership of building the growth engine around it.</div>
+    <div>
+      <a href="#why-chawu" class="scroll-cta">A taste of some growth stratz<span class="arrow">↓</span></a>
+    </div>
+  </section>
+
+<!-- ============ 05 IDEA 1: CHAWU @ WORK ============ -->
+<section id="ideas" class="band-dark">
+  <div class="wrap">
+    <div class="idea-tag reveal">Growth Idea 01 — CHAWU @ Work</div>
+    <h2 class="big reveal">A better office tea experience, managed by CHAWU.</h2>
+    <div class="section-intro reveal" style="margin-top:20px; align-self:flex-start;">You’ve already got CHAWU into Lyra and o3. Now let’s put it in workspaces everywhere.</div>
+    <div class="offer-grid reveal">
+      <div class="card"><h3>01 LAND</h3><p>A curated CHAWU tasting gives office managers and teams a low-friction way to experience the product.</p></div>
+      <div class="card"><h3>02 SUBSCRIBE</h3><p>Monthly or quarterly tea replenishment, sized to headcount - predictable revenue for CHAWU, zero hassle for the office.</p></div>
+      <div class="card"><h3>03 EXPAND</h3><p>Once CHAWU is in the kitchen, introduce gifting, events, new blends and additional offices.</p></div>
+      <div class="card"><h3>04 REFER</h3><p>Happy teams become introductions to other companies, founders, HR teams and office managers.</p></div>
+    </div>
+    <div class="pullquote reveal">Move from one-off DTC purchases to recurring B2B relationships.</div>
+  </div>
+</section>
+
+<!-- ============ 06 IDEA 2: PARTNERSHIPS ============ -->
+<section id="partnerships" class="wrap">
+  <div class="idea-tag reveal">Growth Idea 02 — Partnerships</div>
+  <h2 class="big reveal">Build culture with brands people already love.</h2>
+  <div class="section-intro reveal" style="margin-top:20px; max-width:640px; align-self:flex-start;">CHAWU doesn't need to build every audience from scratch. The right collaborations can give us access to new communities while making the brand feel bigger, more culturally relevant and more desirable.</div>  
+  <div class="grid g4 reveal" style="margin-top:56px;">    
+    <div class="card"><h3>Collaborate</h3><p>Make something neither brand would make alone — limited-edition tea, a dessert pairing, a co-branded product, an exclusive menu.</p></div>
+    <div class="card"><h3>Activate</h3><p>Give people a reason to show up — launch events, pop-ups, Pilates mornings, fashion events, tea tastings.</p></div>    
+    <div class="card"><h3>Amplify</h3><p>Turn the collaboration into content — both brands post, creators experience it, UGC gets generated, email audiences are reached.</p></div>    
+    <div class="card"><h3>Convert</h3><p>Give the new audience somewhere to go — an exclusive CHAWU code, a limited drop, a bundle, a new-customer offer, retargeting.</p></div>  
+  </div>
+  <div class="pgrid reveal">
+    <div class="pcard"><div class="ptag">Pilates</div><h4>CHAWU × One Playground</h4><p>A post-class tea experience for the studio's members.</p>
+      <div class="partner-list">
+        <div class="partner-label">Strong partners</div>
+        <div class="partner-names">KX Pilates · Fluidform · The Upside</div>
+      </div>
+    </div>
+    <div class="pcard"><div class="ptag">Fashion</div><h4>CHAWU × Aje</h4><p>Tea served at a launch event, matched to the collection.</p>
+      <div class="partner-list">
+        <div class="partner-label">Strong partners</div>
+        <div class="partner-names">Assembly Label · Camilla and Marc</div>
+      </div>
+    </div>
+    <div class="pcard"><div class="ptag">Culture</div><h4>CHAWU × Broadsheet</h4><p>Mix tea tasting and activations to invigorate Australian weekend life</p>
+  <div class="partner-list">
+        <div class="partner-label">Strong partners</div>
+        <div class="partner-names">Aussie Corporate  · Concrete Playground</div>
+      </div>  
+</section>
+
+<!-- ============ 07 WHY I'M DOING THIS ============ -->
+<section id="love-letter" class="band-dark"">
+  <div class="wrap">
+    <div class="eyebrow reveal">05 — A Love Letter to CHAWU</div>
+    <h2 class="big reveal" style="margin-bottom:50px;">My love for CHAWU</h2>
+    <div class="personal reveal">
+      <p>I genuinely love Chinese tea, and the whole world around specialty drinks.</p>
+      <p>I've loved helping at CHAWU's pop-ups because I get to see the moment someone tastes the product, understands it, and gets <em>excited</em> about it.</p>
+      <p>I also want to understand what it actually takes to build a business — not from the sidelines, but by taking responsibility for a part of it.</p>
+      <p>I believe CHAWU has something worth building.</p>
+      <p>And I think I can help build it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL ============ -->
+<section id="build" class="final wrap">
+  <div class="divider-zh reveal">一起 · 建造 · 茶屋</div><br>
+  <h2 class="reveal">Let's build CHAWU<br>together.</h2>
+</section>
+
+<footer>
+  <span>CHAWU'S 3RD BUILDER</span>
+  <span>Nikki Yao, 2026</span>
+</footer>
+
+<script>
+  // Nav scroll state
+  const nav = document.getElementById('nav');
+  const progress = document.getElementById('progress');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    progress.style.width = scrolled + '%';
+  });
+
+  // Mobile menu
+  const burger = document.getElementById('burgerBtn');
+  const menu = document.getElementById('mobile-menu');
+  const closeMenu = document.getElementById('closeMenu');
+  burger.addEventListener('click', () => menu.classList.add('open'));
+  closeMenu.addEventListener('click', () => menu.classList.remove('open'));
+  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => menu.classList.remove('open')));
+
+  // Reveal on scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+</script>
+</body>
+</html>
